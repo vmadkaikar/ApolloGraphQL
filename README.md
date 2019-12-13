@@ -29,11 +29,7 @@ sample fetch query
     stateAbbr
     countyName
   }
-  header {
-    title
-    url
-  }
-  user(id: 1) {
+  users {
     id
     fName
     lName
@@ -43,5 +39,6 @@ sample fetch query
     }
   }
 }
+
 
 ```
