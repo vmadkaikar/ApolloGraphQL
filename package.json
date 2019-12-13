@@ -2,6 +2,7 @@
   "name": "apollo-graphQL",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,11 +11,22 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@apollo/federation": "^0.11.2",
+    "@graphql-modules/core": "^0.7.13",
+    "ApolloGraphQLUserSchema": "git+https://github.com/vmadkaikar/ApolloGraphQLUserSchema.git",
     "apollo-server": "^2.9.13",
     "apollo-server-express": "^2.9.13",
     "cors": "^2.8.5",
     "graphql": "^14.5.8",
+    "graphql-import-node": "0.0.4",
+    "install": "^0.13.0",
     "lodash": "^4.17.15",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "npm": "^6.13.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.5",
+    "@babel/preset-env": "^7.7.6",
+    "@babel/register": "^7.7.4"
   }
 }
