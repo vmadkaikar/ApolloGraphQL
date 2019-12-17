@@ -1,6 +1,52 @@
 const _ = require('lodash');
 const fetch = require('node-fetch');
 
+export default {
+    Query: {
+        books: (root, args) => {
+            return books;
+        },
+        allianceInfo: (root, {allId}) => {
+            return fetch(`https://www.qa.ehealthmedicareplans.com/mcws/rs/alliance/call-service/v2/${allId}`, {
+                headers: {strictSSL: false},
+            })
+                .then(res => res.json())
+                .then(res => {
+                    return res.allianceInfo;
+                });
+        },
+        locations: (root, {zip}) => {
+            return fetch(`https://www.qa.ehealthmedicareplans.com/mcws/rs/locations/v2?zip=${zip}`)
+                .then(res => res.json())
+                .then(res => res.locationList);
+        },
+        header: () => {
+            return fetch('https://www.qa.ehealthmedicare.com/wp-json/ehm/v1/menu/header/', {
+                headers: {strictSSL: false},
+            }).then(res => res.json());
+        },
+        getReviews: () => reviews,
+        settings: (root, {allid, allidConfig}) => {
+            return fetch(`https://www.cm.ehealthmedicareplans.com/mcws/rs/app-setting/v2?allid=${allid}&allidConfig=${allidConfig}`, {
+                headers: {strictSSL: false},
+            }).then(res => res.json());
+        }
+    },
+    User: {
+        org(user) {
+            return {
+                name: `org-name-${user.id}`,
+                id: `org-id-${user.id}`,
+            };
+        }
+    },
+    Review: {
+        author(review) {
+            return {__typename: "User", id: review.authorID};
+        }
+    },
+};
+
 const books = [
     {
         title: 'Harry Potter and the Chamber of Secrets',
@@ -28,10 +74,12 @@ const users = [
         email: 'a@abc.com'
     }
 ];
+
 const usernames = [
     {id: "1", username: "@ada"},
     {id: "2", username: "@complete"}
 ];
+
 const reviews = [
     {
         id: "1",
@@ -58,53 +106,3 @@ const reviews = [
         body: "Prefer something else."
     }
 ];
-
-export default {
-    Query: {
-        books: (root, args) => {
-            return books;
-        },
-        allianceInfo: (root, {allId}) => {
-            return fetch(`https://www.qa.ehealthmedicareplans.com/mcws/rs/alliance/call-service/v2/${allId}`, {
-                headers: {strictSSL: false},
-            })
-                .then(res => res.json())
-                .then(res => {
-                    return Object.assign({}, res.allianceInfo, {
-                        serviceHours: res.serviceHours,
-                        throttle: res.throttle,
-                        alliancePhone: res.allianceInfo.alliancePhone.phoneNumber,
-                    });
-                });
-        },
-        locations: (root, {zip}) => {
-            return fetch(`https://www.qa.ehealthmedicareplans.com/mcws/rs/locations/v2?zip=${zip}`)
-                .then(res => res.json())
-                .then(res => res.locationList);
-        },
-        header: () => {
-            return fetch('https://www.qa.ehealthmedicare.com/wp-json/ehm/v1/menu/header/', {
-                headers: {strictSSL: false},
-            }).then(res => res.json());
-        },
-        getReviews: () => {
-            return reviews.map(item => {
-                item
-            });
-        },
-    },
-    User: {
-        org(user) {
-            return {
-                name: `org-name-${user.id}`,
-                id: `org-id-${user.id}`,
-            };
-        }
-    },
-    Review: {
-        author(review) {
-            return {__typename: "User", id: review.authorID};
-        }
-    },
-};
-

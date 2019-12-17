@@ -1,3 +1,6 @@
+scalar JSON
+scalar JSONObject
+
 type Book {
     title: String
     author: String
@@ -16,6 +19,7 @@ type Review  {
     id: ID!
     body: String
     author: User
+
 }
 
 type Query {
@@ -25,7 +29,8 @@ type Query {
     header: [Header]
     getReviews: [Review],
     users: [User],
-    me(id: ID): User
+    me(id: ID): User,
+    settings(allid: String, allidConfig: String): Settings
 }
 
 type AllianceInfo {
@@ -33,7 +38,7 @@ type AllianceInfo {
     serviceHours: String
     throttle: String
     channel: String
-    alliancePhone: String
+    alliancePhone: JSON
     allianceName: String
     allianceCompanyUrl: String
     productLines: [String]
@@ -41,6 +46,10 @@ type AllianceInfo {
     hasPreferredPharmacyFilter: Boolean
     enableOutOfNetworkPopup: Boolean
     turnOnPreferredPharmacyFilter: Boolean
+}
+
+type Settings{
+    appSettingProperties: JSON
 }
 
 type Location {
